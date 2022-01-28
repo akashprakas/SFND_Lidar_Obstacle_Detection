@@ -5,7 +5,10 @@
 #include "../../render/box.h"
 #include <chrono>
 #include <string>
+#include <unordered_set>
 #include "kdtree.h"
+using std::cout;
+using std::endl;
 
 // Arguments:
 // window is the region to draw box around
@@ -75,13 +78,51 @@ void render2DTree(Node* node, pcl::visualization::PCLVisualizer::Ptr& viewer, Bo
 
 }
 
+
+
+template<typename  T>
+void LOG(T toLog ){
+    cout<< toLog << endl;
+}
+
+void Proximity(int pointIndex, std::vector<int>& cluster,KdTree* &tree,float distanceTol,
+               std::unordered_set<int>& ProcessedPoints,const std::vector<std::vector<float>>& points)
+{
+//    LOG("Reaching inside proximity");
+    ProcessedPoints.insert(pointIndex);
+    cluster.push_back(pointIndex);
+    auto nearByPoints = tree->search(points[pointIndex],distanceTol);
+    for(auto & nearPoint : nearByPoints )
+    {
+        if(ProcessedPoints.find(nearPoint) == ProcessedPoints.end())
+        {
+            Proximity(nearPoint,cluster,tree,distanceTol,ProcessedPoints,points);
+        }
+
+    }
+
+}
+
+
 std::vector<std::vector<int>> euclideanCluster(const std::vector<std::vector<float>>& points, KdTree* tree, float distanceTol)
 {
 
 	// TODO: Fill out this function to return list of indices for each cluster
 
 	std::vector<std::vector<int>> clusters;
- 
+
+    std::unordered_set<int> ProcessedPoints;
+    for (int i=0; i<points.size(); i++)
+    {
+
+        if(ProcessedPoints.find(i)==ProcessedPoints.end()){
+//            LOG("reaching inside the intial loop");
+            std::vector<int> cluster;
+            Proximity(i,cluster,tree,distanceTol,ProcessedPoints,points);
+            clusters.push_back(cluster);
+        }
+    }
+
 	return clusters;
 
 }
@@ -132,6 +173,8 @@ int main ()
 	std::vector<Color> colors = {Color(1,0,0), Color(0,1,0), Color(0,0,1)};
   	for(std::vector<int> cluster : clusters)
   	{
+//        LOG("Cluster size is");
+//        LOG(cluster.size());
   		pcl::PointCloud<pcl::PointXYZ>::Ptr clusterCloud(new pcl::PointCloud<pcl::PointXYZ>());
   		for(int indice: cluster)
   			clusterCloud->points.push_back(pcl::PointXYZ(points[indice][0],points[indice][1],0));
