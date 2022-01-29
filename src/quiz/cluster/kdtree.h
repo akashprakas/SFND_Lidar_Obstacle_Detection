@@ -116,25 +116,6 @@ struct KdTree
                 internalSearch(node->right, ids, boxCordinates, depth, target,distanceTol);
             }
 
-            // THis works but their solution is better i think
-//            if (shouldInsert)
-//            {
-//            internalSearch(node->left,ids,boxCordinates,depth,target);
-//            internalSearch(node->right,ids,boxCordinates,depth,target);
-//            }
-//
-//            else{
-//
-//                if(target[IndexToLook] < node->point[IndexToLook] ) {
-//                    internalSearch(node->left, ids, boxCordinates, depth, target);
-//                }
-//                else{
-//                    internalSearch(node->left,ids,boxCordinates,depth,target);
-//                }
-//
-//
-//            }
-
         }
 
 
