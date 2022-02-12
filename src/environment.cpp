@@ -105,11 +105,11 @@ std::vector<Car> initHighway(bool renderScene,
 void mycityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<pcl::PointXYZI>* &pointProcessorI,const pcl::PointCloud<pcl::PointXYZI>::Ptr& Cloud)
 {
 //    auto Cloud = pointProcessorI->loadPcd("../src/sensors/data/pcd/data_1/0000000000.pcd");
-    auto inputCloud = pointProcessorI->FilterCloud(Cloud,0.15f,Eigen::Vector4f(-10.0,-5.0,-2.0,1.0),Eigen::Vector4f(30.0,8.0,1.0,1.0));
+    auto inputCloud = pointProcessorI->FilterCloud(Cloud,0.15f,Eigen::Vector4f(-10.0,-5.0,-2.0,1.0),Eigen::Vector4f(25.0,6.0,1.0,1.0));
     auto segmentedCloud = pointProcessorI->SegmentPlane(inputCloud,20,0.3);
 //    renderPointCloud(viewer, segmentedCloud.first, "obstacleCloud", Color(1, 0, 0));
     renderPointCloud(viewer, segmentedCloud.second, "PlaeCloud", Color(0, 1, 0));
-    std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters  = pointProcessorI->Clustering(segmentedCloud.first,0.2,25,30000);
+    std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters  = pointProcessorI->Clustering(segmentedCloud.first,0.2,25,1000);
     int clusterID = 0;
     std::vector<Color> colors = {Color(1,0,0), Color(0,1,0), Color(0,0,1)};
     for(const auto&  cluster : cloudClusters)

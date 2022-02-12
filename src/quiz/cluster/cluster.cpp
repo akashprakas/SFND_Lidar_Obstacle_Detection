@@ -85,8 +85,8 @@ void LOG(T toLog ){
     cout<< toLog << endl;
 }
 
-void Proximity(int pointIndex, std::vector<int>& cluster,KdTree* &tree,float distanceTol,
-               std::unordered_set<int>& ProcessedPoints,const std::vector<std::vector<float>>& points)
+inline void Proximity(int pointIndex, std::vector<int>& cluster,KdTree* &tree,float distanceTol,
+                      std::unordered_set<int>& ProcessedPoints,const std::vector<std::vector<float>>& points)
 {
 //    LOG("Reaching inside proximity");
     ProcessedPoints.insert(pointIndex);
@@ -102,14 +102,14 @@ void Proximity(int pointIndex, std::vector<int>& cluster,KdTree* &tree,float dis
     }
 
 }
-
-
-std::vector<std::vector<int>> euclideanCluster(const std::vector<std::vector<float>>& points, KdTree* tree, float distanceTol)
+//
+//
+inline std::vector<std::vector<int>> euclideanCluster(const std::vector<std::vector<float>>& points, KdTree* tree, float distanceTol)
 {
 
-	// TODO: Fill out this function to return list of indices for each cluster
+    // TODO: Fill out this function to return list of indices for each cluster
 
-	std::vector<std::vector<int>> clusters;
+    std::vector<std::vector<int>> clusters;
 
     std::unordered_set<int> ProcessedPoints;
     for (int i=0; i<points.size(); i++)
@@ -123,7 +123,7 @@ std::vector<std::vector<int>> euclideanCluster(const std::vector<std::vector<flo
         }
     }
 
-	return clusters;
+    return clusters;
 
 }
 
